@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventor_desgin_studio/screens/create_screen.dart';
 import 'package:inventor_desgin_studio/screens/browse_files_screen.dart';
-import 'package:inventor_desgin_studio/screens/team_invite_screen.dart';
-import 'package:inventor_desgin_studio/screens/settings_screen.dart';
+import 'package:inventor_desgin_studio/screens/message_screen.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({super.key});
@@ -16,12 +14,12 @@ class QuickActions extends StatelessWidget {
             Expanded(
                 child: QuickButton(
                     icon: Icons.add,
-                    label: 'New Project',
+                    label: 'New Design',
                     neonBorder: true,
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const CreateScreen()),
+                        MaterialPageRoute(builder: (_) => const BrowseFilesScreen()),
                       );
                     })),
             const SizedBox(width: 12),
@@ -42,12 +40,12 @@ class QuickActions extends StatelessWidget {
           children: [
             Expanded(
               child: QuickButton(
-                icon: Icons.group_add,
-                label: 'Team Invite',
+                icon: Icons.message_outlined,
+                label: 'Support Chat',
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const TeamInviteScreen()),
+                    MaterialPageRoute(builder: (_) => const MessageScreen()),
                   );
                 },
               ),
@@ -55,12 +53,12 @@ class QuickActions extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: QuickButton(
-                icon: Icons.settings,
-                label: 'Settings',
+                icon: Icons.help_outline,
+                label: 'Help Center',
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                  // Navigate to help center
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Help Center coming soon!')),
                   );
                 },
               ),

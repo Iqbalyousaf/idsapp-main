@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inventor_desgin_studio/screens/home.dart';
-import 'package:inventor_desgin_studio/screens/projects_screen.dart';
-import 'package:inventor_desgin_studio/screens/analytics_screen.dart';
-import 'package:inventor_desgin_studio/screens/profile_tab_screen.dart';
-import 'package:inventor_desgin_studio/screens/create_screen.dart';
+import 'package:inventor_desgin_studio/screens/browse_files_screen.dart';
+import 'package:inventor_desgin_studio/screens/message_screen.dart';
+import 'package:inventor_desgin_studio/screens/profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -15,22 +14,15 @@ class MainNavigation extends StatefulWidget {
 class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeDashboard(key: Key('home_dashboard')),
-    ProjectsScreen(key: Key('projects_screen')),
-    AnalyticsScreen(key: Key('analytics_screen')),
-    ProfileTabScreen(key: Key('profile_tab_screen')),
+  final List<Widget> _screens = [
+    const HomeDashboard(key: Key('home_dashboard')),
+    const BrowseFilesScreen(key: Key('browse_files_screen')),
+    const MessageScreen(key: Key('message_screen')),
+    const ProfileScreen(key: Key('profile_screen')),
   ];
 
   void _onItemTapped(int index) {
     setState(() => _selectedIndex = index);
-  }
-
-  void _onCreatePressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const CreateScreen()),
-    );
   }
 
   @override
@@ -56,19 +48,18 @@ class _MainNavigationState extends State<MainNavigation> {
               onTap: () => _onItemTapped(0),
             ),
             _NavItem(
-              icon: Icons.folder_copy_outlined,
-              label: 'Projects',
+              icon: Icons.design_services,
+              label: 'Design',
               isSelected: _selectedIndex == 1,
               onTap: () => _onItemTapped(1),
             ),
-            _CreateButton(onPressed: _onCreatePressed),
             _NavItem(
-              icon: Icons.analytics_outlined,
-              label: 'Analytics',
+              icon: Icons.message_outlined,
+              label: 'Messages',
               isSelected: _selectedIndex == 2,
               onTap: () => _onItemTapped(2),
             ),
-             _NavItem(
+            _NavItem(
               icon: Icons.person_outline,
               label: 'Profile',
               isSelected: _selectedIndex == 3,
@@ -119,33 +110,6 @@ class _NavItem extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CreateButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  const _CreateButton({required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        width: 46,
-        height: 36,
-        decoration: BoxDecoration(
-          color: const Color(0xFFD6FF23),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: const Icon(
-          Icons.add,
-          color: Colors.black,
-          size: 24,
         ),
       ),
     );

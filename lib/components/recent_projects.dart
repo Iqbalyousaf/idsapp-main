@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventor_desgin_studio/theme/constants.dart';
-import 'package:inventor_desgin_studio/screens/projects_screen.dart';
-import 'package:inventor_desgin_studio/screens/project_details_screen.dart';
+import 'package:inventor_desgin_studio/screens/browse_files_screen.dart';
 
 class RecentProjects extends StatelessWidget {
   const RecentProjects({super.key});
@@ -40,13 +39,13 @@ class RecentProjects extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Text('Recent Projects',
+            const Text('Recent Designs',
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
             const Spacer(),
             TextButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const ProjectsScreen()),
+                MaterialPageRoute(builder: (_) => const BrowseFilesScreen()),
               ),
               child: const Text('View All', style: TextStyle(color: kNeon)),
             ),
@@ -138,16 +137,9 @@ class ProjectTile extends StatelessWidget {
           constraints: const BoxConstraints.tightFor(width: 36, height: 36),
           padding: EdgeInsets.zero,
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ProjectDetailsScreen(
-                  projectTitle: title,
-                  projectSubtitle: subtitle,
-                  status: chip.text,
-                  statusColor: chip.color,
-                ),
-              ),
+            // Navigate to design details or edit screen
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Opening $title')),
             );
           },
           icon: const Icon(Icons.more_horiz, color: Colors.white54),
