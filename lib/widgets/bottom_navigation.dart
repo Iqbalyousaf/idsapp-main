@@ -25,6 +25,13 @@ class _MainNavigationState extends State<MainNavigation> {
     setState(() => _selectedIndex = index);
   }
 
+  void _showProjectRequestDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => const _ProjectRequestDialog(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,8 +55,8 @@ class _MainNavigationState extends State<MainNavigation> {
               onTap: () => _onItemTapped(0),
             ),
             _NavItem(
-              icon: Icons.design_services,
-              label: 'Design',
+              icon: Icons.folder_open,
+              label: 'Files',
               isSelected: _selectedIndex == 1,
               onTap: () => _onItemTapped(1),
             ),
@@ -67,6 +74,14 @@ class _MainNavigationState extends State<MainNavigation> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showProjectRequestDialog,
+        backgroundColor: const Color(0xFFD6FF23),
+        foregroundColor: Colors.black,
+        elevation: 8,
+        heroTag: 'project_request_fab',
+        child: const Icon(Icons.add, size: 28),
       ),
     );
   }
@@ -111,6 +126,303 @@ class _NavItem extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ProjectRequestDialog extends StatefulWidget {
+  const _ProjectRequestDialog();
+
+  @override
+  State<_ProjectRequestDialog> createState() => _ProjectRequestDialogState();
+}
+
+class _ProjectRequestDialogState extends State<_ProjectRequestDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _projectNameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _budgetController = TextEditingController();
+  final _deadlineController = TextEditingController();
+  String _selectedCategory = 'Mobile App';
+  String _selectedPriority = 'Medium';
+
+  final List<String> _categories = [
+    'Mobile App',
+    'Website',
+    'Logo Design',
+    'Brand Identity',
+    'UI/UX Design',
+    'Other'
+  ];
+
+  final List<String> _priorities = ['Low', 'Medium', 'High', 'Urgent'];
+
+  @override
+  void dispose() {
+    _projectNameController.dispose();
+    _descriptionController.dispose();
+    _budgetController.dispose();
+    _deadlineController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: const Color(0xFF1A2029),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 600),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Request New Project',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Project Name
+                TextFormField(
+                  controller: _projectNameController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    labelText: 'Project Name',
+                    labelStyle: const TextStyle(color: Colors.white70),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFF2A2F38)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFFD6FF23)),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0E131A),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter a project name';
+                    }
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                // Category Dropdown
+                DropdownButtonFormField<String>(
+                  value: _selectedCategory,
+                  style: const TextStyle(color: Colors.white),
+                  dropdownColor: const Color(0xFF1A2029),
+                  decoration: InputDecoration(
+                    labelText: 'Category',
+                    labelStyle: const TextStyle(color: Colors.white70),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFF2A2F38)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFFD6FF23)),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0E131A),
+                  ),
+                  items: _categories.map((category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() => _selectedCategory = value!);
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                // Description
+                TextFormField(
+                  controller: _descriptionController,
+                  style: const TextStyle(color: Colors.white),
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: 'Project Description',
+                    labelStyle: const TextStyle(color: Colors.white70),
+                    hintText: 'Describe your project requirements...',
+                    hintStyle: const TextStyle(color: Colors.white38),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFF2A2F38)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFFD6FF23)),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0E131A),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please describe your project';
+                    }
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                // Budget and Deadline Row
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _budgetController,
+                        style: const TextStyle(color: Colors.white),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Budget (\$)',
+                          labelStyle: const TextStyle(color: Colors.white70),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(color: Color(0xFF2A2F38)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(color: Color(0xFFD6FF23)),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFF0E131A),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _deadlineController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Deadline',
+                          labelStyle: const TextStyle(color: Colors.white70),
+                          hintText: 'e.g., 2 weeks',
+                          hintStyle: const TextStyle(color: Colors.white38),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(color: Color(0xFF2A2F38)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(color: Color(0xFFD6FF23)),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFF0E131A),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                // Priority Dropdown
+                DropdownButtonFormField<String>(
+                  value: _selectedPriority,
+                  style: const TextStyle(color: Colors.white),
+                  dropdownColor: const Color(0xFF1A2029),
+                  decoration: InputDecoration(
+                    labelText: 'Priority',
+                    labelStyle: const TextStyle(color: Colors.white70),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFF2A2F38)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFFD6FF23)),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFF0E131A),
+                  ),
+                  items: _priorities.map((priority) {
+                    return DropdownMenuItem(
+                      value: priority,
+                      child: Text(priority),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() => _selectedPriority = value!);
+                  },
+                ),
+
+                const SizedBox(height: 24),
+
+                // Buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _submitProjectRequest,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFD6FF23),
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          'Send Request',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _submitProjectRequest() {
+    if (!_formKey.currentState!.validate()) return;
+
+    // Here you would typically send the request to your backend
+    Navigator.pop(context);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Project request sent successfully! We\'ll get back to you soon.'),
+        backgroundColor: Color(0xFFD6FF23),
       ),
     );
   }

@@ -4,7 +4,6 @@ import 'package:inventor_desgin_studio/components/user_summary.dart';
 import 'package:inventor_desgin_studio/components/stats_panel.dart';
 import 'package:inventor_desgin_studio/components/recent_projects.dart';
 import 'package:inventor_desgin_studio/components/quick_actions.dart';
-import 'package:inventor_desgin_studio/components/design_tools.dart';
 
 class HomeDashboard extends StatefulWidget {
   const HomeDashboard({super.key});
@@ -44,7 +43,6 @@ class _HomeDashboardState extends State<HomeDashboard> {
                   const SizedBox(height: 16),
                   const QuickActions(),
                   const SizedBox(height: 16),
-                  const DesignTools(),
                 ]),
               ),
             ),

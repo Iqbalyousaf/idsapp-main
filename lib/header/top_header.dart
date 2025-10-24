@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventor_desgin_studio/button_components/logo.dart';
 import 'package:inventor_desgin_studio/theme/constants.dart';
 import 'package:inventor_desgin_studio/button_components/three_icon_button.dart';
+import 'package:inventor_desgin_studio/screens/settings_screen.dart';
 class TopBar extends StatelessWidget {
   const TopBar({super.key});
 
@@ -46,6 +47,17 @@ class TopBar extends StatelessWidget {
               _NotifItem('File approved: brand_guidelines.pdf', '1h'),
               _NotifItem('Anna invited you to “Dashboard Design”', 'yesterday'),
             ],
+          ),
+          const SizedBox(width: 4),
+          IconButton(
+            tooltip: 'Settings',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+            },
+            icon: const Icon(Icons.settings, color: Colors.white70),
           ),
           const SizedBox(width: 4),
           const UserMenu(),

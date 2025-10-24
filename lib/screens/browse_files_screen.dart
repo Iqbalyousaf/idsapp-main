@@ -293,9 +293,104 @@ class _BrowseFilesScreenState extends State<BrowseFilesScreen> {
   }
 
   void _showUploadDialog() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1A2029),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Upload Files',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ListTile(
+              leading: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.blue.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.image, color: Colors.blue),
+              ),
+              title: const Text('Upload Images', style: TextStyle(color: Colors.white)),
+              subtitle: const Text('PNG, JPG, GIF', style: TextStyle(color: Colors.white54)),
+              onTap: () {
+                Navigator.pop(context);
+                _uploadFile('image');
+              },
+            ),
+            ListTile(
+              leading: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.picture_as_pdf, color: Colors.red),
+              ),
+              title: const Text('Upload Documents', style: TextStyle(color: Colors.white)),
+              subtitle: const Text('PDF, DOC, TXT', style: TextStyle(color: Colors.white54)),
+              onTap: () {
+                Navigator.pop(context);
+                _uploadFile('document');
+              },
+            ),
+            ListTile(
+              leading: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.purple.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.video_file, color: Colors.purple),
+              ),
+              title: const Text('Upload Videos', style: TextStyle(color: Colors.white)),
+              subtitle: const Text('MP4, AVI, MOV', style: TextStyle(color: Colors.white54)),
+              onTap: () {
+                Navigator.pop(context);
+                _uploadFile('video');
+              },
+            ),
+            ListTile(
+              leading: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.green.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.audio_file, color: Colors.green),
+              ),
+              title: const Text('Upload Audio', style: TextStyle(color: Colors.white)),
+              subtitle: const Text('MP3, WAV, FLAC', style: TextStyle(color: Colors.white54)),
+              onTap: () {
+                Navigator.pop(context);
+                _uploadFile('audio');
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _uploadFile(String type) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Upload functionality coming soon!'),
+      SnackBar(
+        content: Text('Upload $type functionality - File picker would open here'),
         backgroundColor: kNeon,
       ),
     );
