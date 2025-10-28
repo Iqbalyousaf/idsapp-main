@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:inventor_desgin_studio/providers/auth_provider.dart';
 import 'package:inventor_desgin_studio/providers/user_provider.dart';
 import 'package:inventor_desgin_studio/providers/app_provider.dart';
+import 'package:inventor_desgin_studio/providers/projects_provider.dart';
 import 'package:inventor_desgin_studio/screens/splash_screen.dart';
 
 void main() async {
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => AppProvider()),
+        ChangeNotifierProvider(create: (_) => ProjectsProvider()),
       ],
       child: App(key: const Key('main_app')),
     );

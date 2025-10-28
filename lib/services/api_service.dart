@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:inventor_desgin_studio/models/user_model.dart';
+import 'package:inventor_desgin_studio/models/project_model.dart';
 
 class ApiService {
   static const String _baseUrl = 'https://inventerdesignstudio.com/api/mobile';
@@ -333,6 +334,53 @@ class ApiService {
     _jwtToken = null;
     _sessionToken = null;
     _deviceToken = null;
+  }
+
+  // Projects methods
+  Future<List<Project>> getUserProjects({int limit = 10, int offset = 0}) async {
+    final response = await makeRequest(
+      '/user/projects?limit=$limit&offset=$offset',
+      method: 'GET',
+    );
+
+    final data = response['data'] ?? response;
+    if (data is List) {
+      return data.map((item) => Project.fromJson(item as Map<String, dynamic>)).toList();
+    }
+    return [];
+  }
+
+  Future<Project> createProject(Map<String, dynamic> projectData) async {
+    final response = await makeRequest(
+      '/projects',
+      method: 'POST',
+      body: projectData,
+    );
+
+    return Project.fromJson(response);
+  }
+
+  Future<Project> updateProject(String projectId, Map<String, dynamic> updates) async {
+    final response = await makeRequest(
+      '/projects/$projectId',
+      method: 'PUT',
+      body: updates,
+    );
+
+    return Project.fromJson(response);
+  }
+
+  Future<void> deleteProject(String projectId) async {
+    await makeRequest(
+      '/projects/$projectId',
+      method: 'DELETE',
+    );
+  }
+
+  // Stats methods
+  Future<Map<String, dynamic>> getUserStats() async {
+    final response = await makeRequest('/user/stats');
+    return response;
   }
 }
 
